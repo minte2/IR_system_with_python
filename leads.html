@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leads - Bridge Software Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9fafb;
+      color: #333;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar styles exactly as your dashboard */
+    .sidebar {
+      width: 240px;
+      background-color: #012a4a; /* dark blue */
+      color: #fff;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      padding-top: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin: 0 0 30px 0;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      color: #fff;
+      user-select: none;
+    }
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+    }
+    .nav-links li {
+      margin: 0;
+    }
+    .sidebar a {
+      color: #fff;
+      padding: 12px 20px;
+      display: block;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #01497c; /* lighter blue */
+    }
+
+    /* Main content area */
+    .main-content {
+      margin-left: 240px;
+      padding: 20px;
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    /* Page styles */
+    h1 {
+      margin-bottom: 20px;
+      color: #007bff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+    tr:hover {
+      background-color: #f1faff;
+    }
+    .lead-contact-btn {
+      background-color: #28a745;
+      border: none;
+      color: white;
+      padding: 7px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+    .lead-contact-btn:hover {
+      background-color: #1e7e34;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        padding: 0;
+        box-shadow: none;
+      }
+      .sidebar h2 {
+        display: none;
+      }
+      .nav-links {
+        display: flex;
+      }
+      .sidebar a {
+        padding: 12px 10px;
+        flex-grow: 1;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar">
+    <h2>Bridge</h2>
+    <ul class="nav-links">
+      <a href="#" >Dashboard</a>
+      <a href="my-listings.html">My Listings</a>
+      <a href="messages.html">Messages</a>
+      <a href="orders.html">Orders</a>
+      <a href="#" class="active">Leads</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="login.html">Logout</a>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <h1>Leads</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Lead Name</th>
+          <th>Company</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Interested In</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="leads-body">
+        <!-- Leads will be populated here -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    // Sample leads data
+     const leads = [
+      {
+        name: "Alem Tesfaye",
+        company: "Addis Agro Ltd.",
+        email: "alem.tesfaye@example.com",
+        phone: "+251911123456",
+        interestedIn: "Irrigation Pump (Solar/DC)"
+      },
+      {
+        name: "Selam Yohannis",
+        company: "GreenFuture NGO",
+        email: "sara.mekonnen@example.org",
+        phone: "+251922234567",
+        interestedIn: "Teff Grinding Mill"
+      },
+      
+      {
+        name: "Mulugeta Alem",
+        company: "Coffee Growers Union",
+        email: "mulugeta.alem@example.com",
+        phone: "+251944456789",
+        interestedIn: "Coffee Bean Huller or Roaster"
+      },
+      {
+        name: "Eyerus Birhanu",
+        company: "Fruit Dryers Inc.",
+        email: "eyerus.birhanu@example.com",
+        phone: "+251955567890",
+        interestedIn: "Fruit Dryer (Solar or Electric)"
+      }
+    ];
+
+    const leadsBody = document.getElementById('leads-body');
+
+    function renderLeads() {
+      leadsBody.innerHTML = '';
+      leads.forEach(lead => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${lead.name}</td>
+          <td>${lead.company}</td>
+          <td>${lead.email}</td>
+          <td>${lead.phone}</td>
+          <td>${lead.interestedIn}</td>
+          <td><button class="lead-contact-btn" onclick="contactLead('${lead.email}')">Contact</button></td>
+        `;
+        leadsBody.appendChild(tr);
+      });
+    }
+
+    function contactLead(email) {
+      window.location.href = `mailto:${email}`;
+    }
+
+    renderLeads();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+}
+
+.machine-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+  width: 300px;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 20px;
+}
+
+.chat-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 300px;
+  background: #f9f9f9;
+}

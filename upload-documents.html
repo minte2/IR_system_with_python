@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Upload Documents - Bridge</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f4f7fc;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .upload-container {
+      max-width: 600px;
+      margin: 60px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+    h3 {
+      color: #012a4a;
+      margin-bottom: 25px;
+    }
+    .btn-primary {
+      background-color: #01497c;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #012a4a;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="upload-container">
+    <h3>Upload Business Documents</h3>
+    <form enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="businessLicense" class="form-label">Business License (PDF or JPG)</label>
+        <input class="form-control" type="file" id="businessLicense" accept=".pdf,.jpg,.jpeg,.png" />
+      </div>
+      <div class="mb-3">
+        <label for="taxId" class="form-label">Tax Identification Certificate</label>
+        <input class="form-control" type="file" id="taxId" accept=".pdf,.jpg,.jpeg,.png" />
+      </div>
+      <div class="mb-3">
+        <label for="companyProfile" class="form-label">Company Profile (optional)</label>
+        <input class="form-control" type="file" id="companyProfile" accept=".pdf,.doc,.docx" />
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">Upload Documents</button>
+        <a href="dashboard.html" class="btn btn-outline-secondary">Back to Dashboard</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

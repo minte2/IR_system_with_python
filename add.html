@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add/Edit Machinery Listing - Bridge</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f0f4f8;
+    }
+    .form-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #01497c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h2 class="mb-4">Add/Edit Machinery Listing</h2>
+      <form id="listingForm">
+        <div class="mb-3">
+          <label for="machineName" class="form-label">Machinery Name</label>
+          <input type="text" class="form-control" id="machineName" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <select class="form-select" id="category" required>
+            <option selected disabled>Select Category</option>
+            <option>Agricultural</option>
+            <option>Recycling</option>
+            <option>Construction</option>
+            <option>Textile</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" rows="4" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="price" class="form-label">Price (ETB)</label>
+          <input type="number" class="form-control" id="price" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="location" class="form-label">Manufacturing Location</label>
+          <input type="text" class="form-control" id="location" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="imageUpload" class="form-label">Upload Image</label>
+          <input class="form-control" type="file" id="imageUpload" accept="image/*">
+        </div>
+
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" id="status" checked>
+          <label class="form-check-label" for="status">Mark as Active</label>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="reset" class="btn btn-secondary me-2">Reset</button>
+          <button type="submit" class="btn btn-primary">Save Listing</button>
+        </div>
+      </form>
+
+      <div id="alertSuccess" class="alert alert-success mt-3 d-none" role="alert">
+        ✅ Listing saved successfully!
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('listingForm');
+    const alertSuccess = document.getElementById('alertSuccess');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById('machineName').value,
+        category: document.getElementById('category').value,
+        description: document.getElementById('description').value,
+        price: document.getElementById('price').value,
+        location: document.getElementById('location').value,
+        status: document.getElementById('status').checked ? "Active" : "Draft",
+        image: document.getElementById('imageUpload').files[0]?.name || "placeholder.jpg"
+      };
+
+      // Save to localStorage (mock backend)
+      const existingListings = JSON.parse(localStorage.getItem('machineryListings') || "[]");
+      existingListings.push(data);
+      localStorage.setItem('machineryListings', JSON.stringify(existingListings));
+
+      // Show success message
+      alertSuccess.classList.remove('d-none');
+      setTimeout(() => alertSuccess.classList.add('d-none'), 3000);
+
+      // Optionally, reset the form
+      form.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notifications - Bridge Software Platform</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      background-color: #f4f6f8;
+      color: #222;
+    }
+
+    /* Sidebar styles (same as dashboard) */
+    .sidebar {
+      width: 240px;
+      background-color: #012a4a;
+      color: #fff;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      padding-top: 20px;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links li {
+      margin: 0;
+    }
+    .sidebar a {
+      color: #fff;
+      padding: 12px 20px;
+      display: block;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #01497c;
+    }
+
+    /* Main content */
+    .main-content {
+      margin-left: 240px;
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    h1 {
+      font-weight: 700;
+      color: #0d6efd;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .notification-list {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .notification-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e1e4eb;
+      cursor: default;
+      transition: background-color 0.3s ease;
+    }
+    .notification-item.unread {
+      background-color: #e7f1ff;
+      font-weight: 600;
+    }
+    .notification-item:last-child {
+      border-bottom: none;
+    }
+    .notification-text {
+      flex: 1 1 70%;
+      min-width: 0;
+      color: #333;
+      font-size: 1rem;
+    }
+    .notification-time {
+      flex: 0 0 110px;
+      font-size: 0.85rem;
+      color: #6c757d;
+      text-align: right;
+      margin-right: 15px;
+      white-space: nowrap;
+    }
+    .btn-mark-read {
+      flex: 0 0 auto;
+      background-color: #198754;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-mark-read:hover:not(:disabled) {
+      background-color: #146c43;
+    }
+    .btn-mark-read:disabled {
+      background-color: #6c757d;
+      cursor: default;
+    }
+    .no-notifications {
+      padding: 60px;
+      text-align: center;
+      font-size: 1.15rem;
+      color: #777;
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        padding: 0;
+      }
+      .sidebar h2 {
+        display: none;
+      }
+      .nav-links {
+        display: flex;
+      }
+      .sidebar a {
+        flex-grow: 1;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+      .main-content {
+        margin-left: 0;
+      }
+    }
+    @media (max-width: 480px) {
+      .notification-text {
+        flex-basis: 100%;
+        margin-bottom: 8px;
+      }
+      .notification-time {
+        flex-basis: 100%;
+        text-align: left;
+        margin-bottom: 8px;
+      }
+      .btn-mark-read {
+        flex-basis: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar">
+    <h2>Bridge</h2>
+    <ul class="nav-links">
+      <a href="seller_dashboard.html">Dashboard</a>
+      <a href="my-listings.html">My Listings</a>
+      <a href="messages.html">Messages</a>
+      <a href="orders.html">Orders</a>
+      <a href="leads.html">Leads</a>
+      <a href="#" class="active">Notifications</a>
+      <a href="login.html">Logout</a>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <h1>Notifications</h1>
+    <div class="notification-list" id="notification-list" role="list" aria-live="polite" aria-label="User notifications">
+      <!-- Notifications inserted here dynamically -->
+    </div>
+  </main>
+
+  <script>
+    const notifications = [
+      {
+        id: 1,
+        text: "Your order #1234 for Irrigation Pump (Solar/DC) has been shipped.",
+        timestamp: new Date(Date.now() - 2 * 3600 * 1000),
+        read: false,
+      },
+      {
+        id: 2,
+        text: "New message from Alem Tesfaye about your machinery listing.",
+        timestamp: new Date(Date.now() - 24 * 3600 * 1000),
+        read: true,
+      },
+      {
+        id: 3,
+        text: "Your profile was updated successfully.",
+        timestamp: new Date(Date.now() - 3 * 24 * 3600 * 1000),
+        read: true,
+      },
+      {
+        id: 4,
+        text: "New lead interested in Milk Pasteurizer & Separator",
+        timestamp: new Date(Date.now() - 4 * 24 * 3600 * 1000),
+        read: false,
+      },
+    ];
+
+    const listContainer = document.getElementById('notification-list');
+
+    function formatTime(date) {
+      const now = new Date();
+      const diff = now - date;
+      const mins = Math.floor(diff / 60000);
+      const hrs = Math.floor(mins / 60);
+      const days = Math.floor(hrs / 24);
+
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return `${mins} minute${mins > 1 ? 's' : ''} ago`;
+      if (hrs < 24) return `${hrs} hour${hrs > 1 ? 's' : ''} ago`;
+      if (days < 7) return `${days} day${days > 1 ? 's' : ''} ago`;
+      return date.toLocaleDateString();
+    }
+
+    function renderNotifications() {
+      listContainer.innerHTML = '';
+      if (notifications.length === 0) {
+        listContainer.innerHTML = `<div class="no-notifications">You have no notifications.</div>`;
+        return;
+      }
+
+      notifications.forEach(({ id, text, timestamp, read }) => {
+        const item = document.createElement('div');
+        item.className = `notification-item${read ? '' : ' unread'}`;
+        item.innerHTML = `
+          <div class="notification-text">${text}</div>
+          <div class="notification-time">${formatTime(timestamp)}</div>
+          <button class="btn-mark-read" ${read ? 'disabled' : ''} onclick="markAsRead(${id}, this)">
+            ${read ? 'Read' : 'Mark as read'}
+          </button>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    function markAsRead(id, button) {
+      const notif = notifications.find(n => n.id === id);
+      if (!notif || notif.read) return;
+      if (!confirm('Mark this notification as read?')) return;
+
+      notif.read = true;
+      button.disabled = true;
+      button.textContent = 'Read';
+      button.closest('.notification-item').classList.remove('unread');
+    }
+
+    renderNotifications();
+  </script>
+
+</body>
+</html>
